@@ -47,7 +47,7 @@ func MakeData(M, N, P int, randomData, diagonal bool) (A, B, C *matrix.FloatMatr
         if diagonal {
             d := matrix.FloatNormal(P, 1)
             B := matrix.FloatDiagonal(P, 0.0)
-            B.SetIndexes(matrix.DiagonalIndexes(B), d.FloatArray())
+            B.SetIndexesFromArray(d.FloatArray(), matrix.DiagonalIndexes(B)...)
         } else {
             B = matrix.FloatNormal(P, N)
         }
@@ -82,7 +82,7 @@ func Check(A, B, C0 *matrix.FloatMatrix) (dt time.Duration, result bool) {
 }
 
 func CheckWithFunc(A, B, C0 *matrix.FloatMatrix, cfunc MatrixCheckFunc) (dt time.Duration, result bool) {
-    C := matrix.FloatZeros(A.Rows(), B.Cols())
+    C := matrix.FloatZeros(C0.Rows(), C0.Cols())
     fnc := func() {
         cfunc(A, B, C)
     }
